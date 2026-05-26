@@ -7,10 +7,10 @@ import google.generativeai as genai
 # --- 1. CONFIGURATION & PLACEHOLDERS ---
 # Change these URLs to the actual photos of your friends
 USER_CONFIG = {
-    "Imeth": {"image": "https://drive.google.com/file/d/1Ro1gD6yriIEY5XwGdHvmKngI7cLdCQ1I/view?usp=drive_link", "color": "#FF4B4B"},
-    "Kavindu": {"image": "https://drive.google.com/file/d/1r848IZj4NzR5bZB7EIhWW8G7I7sgWXPb/view?usp=drive_link", "color": "#1F77B4"},
-    "Ramith": {"image": "https://drive.google.com/file/d/1OFdMcqdGpIYXylLHd7B5knV_6fNLCcph/view?usp=drive_link", "color": "#2CA02C"},
-    "Sandali": {"image": "https://drive.google.com/file/d/1uz8OKtLcKcFaFlmWjA0fNW_Sv4P6RPV8/view?usp=drive_link", "color": "#FF7F0E"},
+    "Imeth": {"image": "https://lh3.googleusercontent.com/d/1Ro1gD6yriIEY5XwGdHvmKngI7cLdCQ1I", "color": "#FF4B4B"},
+    "Kavindu": {"image": "https://lh3.googleusercontent.com/d/1r848IZj4NzR5bZB7EIhWW8G7I7sgWXPb", "color": "#1F77B4"},
+    "Ramith": {"image": "https://lh3.googleusercontent.com/d/1OFdMcqdGpIYXylLHd7B5knV_6fNLCcph", "color": "#2CA02C"},
+    "Sandali": {"image": "https://lh3.googleusercontent.com/d/1uz8OKtLcKcFaFlmWjA0fNW_Sv4P6RPV8", "color": "#FF7F0E"},
 }
 
 # Mock Exchange Rates (In a real app, you'd fetch from an API)
