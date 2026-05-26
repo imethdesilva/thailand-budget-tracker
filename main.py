@@ -71,7 +71,7 @@ with col2:
     st.markdown(f"**฿1 = {THB_TO_LKR} LKR**")
     st.markdown(f"**$1 = {USD_TO_LKR} LKR**")
 
-st.title("Thailand 2024 🌴")
+st.title("Causeway Budget 2026")
 
 # --- 5. LEADERBOARD LOGIC ---
 leaderboard_data = []
@@ -89,7 +89,7 @@ for name, info in st.session_state.data.items():
 # Sort by most money left
 leaderboard_data = sorted(leaderboard_data, key=lambda x: x['remaining'], reverse=True)
 
-st.subheader("🏆 Budget King/Queen")
+st.subheader("Don't go broke in Thailand")
 
 for person in leaderboard_data:
     with st.container():
@@ -134,30 +134,42 @@ st.subheader("🤖 Ask Chutipan")
 st.caption("Your Thai Itinerary Guide")
 
 # --- AI CONFIGURATION ---
-# This looks for the key in secrets.toml (locally) or Cloud Settings (deployed)
+# --- AI CONFIGURATION (Updated to Gemini 1.5 Flash) ---
 if "GEMINI_API_KEY" in st.secrets:
-    genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-    model = genai.GenerativeModel('gemini-pro')
+    try:
+        genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+        # Using 'gemini-1.5-flash' for speed and better performance
+        model = genai.GenerativeModel(
+            model_name='gemini-2.5-flash',
+            system_instruction="You are Chutipan, a helpful and fun Thai travel guide. You are helping Imeth, Kavindu, Ramith, and Sandali on their trip. Always start with 'Sawadee ka! 🙏'. Keep answers concise, use emojis, and give local Thai advice."
+        )
+    except Exception as e:
+        st.error(f"Configuration Error: {e}")
 else:
-    st.error("API Key not found. Please add it to Streamlit Secrets!")
+    st.error("API Key missing! Add GEMINI_API_KEY to Streamlit Secrets.")
+
+# --- CHATBOT UI ---
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if prompt := st.chat_input("Ask about places, food or prices..."):
+if prompt := st.chat_input("Ask Chutipan..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
         try:
-            full_prompt = f"You are Chutipan, a helpful Thai travel assistant. Every response MUST start with 'Sawadee ka!'. Answer the following: {prompt}"
-            response = model.generate_content(full_prompt)
+            # With 1.5 Flash, we don't need to repeat instructions in the prompt
+            # because we used 'system_instruction' above.
+            response = model.generate_content(prompt)
+            
             full_res = response.text
             st.markdown(full_res)
             st.session_state.messages.append({"role": "assistant", "content": full_res})
         except Exception as e:
-            st.error("Chutipan is taking a nap. (Check API Key)")
+            st.error("Chutipan is currently stuck in Bangkok traffic. Try again in a second!")
+            st.info(f"Error details: {e}")
 
 # --- 7. EXTRA FEATURES ---
 with st.sidebar:
@@ -168,5 +180,3 @@ with st.sidebar:
         st.session_state.data = {name: {"total_budget": 50000.0, "expenses": []} for name in USER_CONFIG.keys()}
         st.rerun()
 
-    st.write("---")
-    st.write("Built with ❤️ for the Boys & Sandali")
